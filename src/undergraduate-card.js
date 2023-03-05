@@ -1,86 +1,148 @@
 import { LitElement, html, css } from 'lit';
+import "@lrnwebcomponents/meme-maker";
 
-const logo = new URL('../assets/open-wc-logo.svg', import.meta.url).href;
 
-class UndergraduateCard extends LitElement {
-  static properties = {
-    header: { type: String },
+//const Bryce = new URL('../assets/bryce-image.png', import.meta.url).href;
+
+export class UndergraduateCard extends LitElement {
+  static get properties() {
+    return {
+      name: {
+        type: String,
+        reflect: true
+      },
+      description: {
+        type: String,
+        reflect: true
+      },
+      opened: {
+        type: Boolean,
+        reflect: true
+      },
+      cardColor: { 
+        type: String, 
+        reflect: true,
+        attribute: "card-color" },
+      imageLink: { 
+        type: String },
+    }
   }
-
-  static styles = css`
-    :host {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-start;
-      font-size: calc(10px + 2vmin);
-      color: #1a2b42;
-      max-width: 960px;
-      margin: 0 auto;
-      text-align: center;
-      background-color: var(--undergraduate-card-background-color);
+  static get styles () {
+    return css`
+    .buttons{
+   padding: 5px;
+   color: blue;
+}
+.buttons:hover{
+  background-color: orange;
+}
+.buttons:focus {
+  background-color: orange; 
+}
+.all{
+  display: inline-block;
+  border-width: 5px;
+  width: 400px;
+  max-width: 500px;
+  margin: auto;
+  margin-top: 10px;
+  background-color: var(--undergraduate-card-color, white);
+}
+.title{
+  text-align: center;
+  font-size: 40px;
+}
+.name{
+  text-align: center;
+}
+.content{
+   text-align: center;
+}
+img {
+  width: 300px;
+}
+p {
+/*   text-align: left;  */
+  text-indent: 5%;
+  font-size: 18px;
+}
+.detailsButton {
+  margin: 12px;
+  position: center; 
+  color: blue;
+}
+  @media (min-width: 500px) and (max-width: 800px) {
+    
+    .detailsButton {
+      display: none;
     }
-
-    main {
-      flex-grow: 1;
-    }
-
-    .logo {
-      margin-top: 36px;
-      animation: app-logo-spin infinite 20s linear;
-    }
-
-    @keyframes app-logo-spin {
-      from {
-        transform: rotate(0deg);
-      }
-      to {
-        transform: rotate(360deg);
-      }
-    }
-
-    .app-footer {
-      font-size: calc(12px + 0.5vmin);
-      align-items: center;
-    }
-
-    .app-footer a {
-      margin-left: 5px;
-    }
-  `;
+@media (max-width: 500px) {
+  .all{
+    transform: scale(0.8);
+  }
+}
+  }
+    `;
+  };
 
   constructor() {
     super();
-    this.header = 'My app';
+    this.paragraph = "Details ";
+    this.name = "BRYYYCCCEEEE";
+    this.subname = "IST 256";
+    this.description = "My face when he code finaly decides to work.  This is Bryce.  He looks so cool.";
+    this.topText = "Woah my project is done";
+    this.bottomText = "Hi";
+    this.opened = false;
+    this.imageLink = "https://cdn.discordapp.com/attachments/1062806966021402684/1063160172773654659/IMG_9420.png";
   }
+  toggleEvent(e) {
+    const state =
+      this.shadowRoot.querySelector("details").getAttribute("open") === ''
+        ? true
+        : false;
+    this.opened = state;
+  }
+
+  updated(changedProperties) {
+    changedProperties.forEach((oldValue, propName) => {
+      if (propName === 'opened') {
+        this.dispatchEvent(
+          new CustomEvent('open-changed', {
+            composed: true,
+            bubbles: true,
+            canelable: false,
+            detail: {
+              value: this[propName]
+            },
+          })
+        );
+      }
+    });
+  }
+
 
   render() {
     return html`
-      <main>
-        <div class="logo"><img alt="open-wc logo" src=${logo} /></div>
-        <h1>${this.header}</h1>
-
-        <p>Edit <code>src/UndergraduateCard.js</code> and save to reload.</p>
-        <a
-          class="app-link"
-          href="https://open-wc.org/guides/developing-components/code-examples/"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Code examples
-        </a>
-      </main>
-
-      <p class="app-footer">
-        🚽 Made with love by
-        <a
-          target="_blank"
-          rel="noopener noreferrer"
-          href="https://github.com/open-wc"
-          >open-wc</a
-        >.
-      </p>
+<div class="all">
+<header class ="name">
+  <h1 class="title">${this.name}</h1>
+  <h2 class="subtitle">${this.subname}</h2>
+  </header>
+   <details class="header" .open="${this.opened}" @toggle="${this.toggleEvent}">
+          <summary>${this.paragraph}</summary>
+          <div>
+            <slot></slot>
+          </div>
+        </details>
+  <section class="content">
+  <meme-maker
+          image-url="${this.imageLink}"
+          top-text="${this.topText}"
+          bottom-text="${this.bottomText}"
+        ></meme-maker>
+   </section>
+  </div>
     `;
   }
 }
