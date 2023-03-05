@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="Description" content="Put your description here.">
+  <base href="/">
+
+  <style>
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: sans-serif;
+      background-color: #ededed;
+      --undergraduate-card-background-color: green;
+    }
+    
+  </style>
+  <title>undergraduate-card</title>
+</head>
+
+<body>
+  <div class="buttons">
+    <button class="copy">Copy</button>
+    <button class="colorButton">Change Background Color</button>
+    <button class = "changeTitle">Change Title</button>
+    <button class = "deleteButton">Delete Last Instance</button>
+    <button class = "detailsButton">Details</button>
+  </div>
+ <div id="app">
+  <undergraduate-card top="BRYCLE">
+    <ul>
+      <li>My face when he code finaly decides to work.  This is Bryce.  He looks so cool.</li>
+    </ul>
+  </undergraduate-card>
+</div>
+
+
+  <script type="module" src="./src/undergraduate-card.js"></script>
+  <script>
+
+    document.body.addEventListener("open-changed", (e) => {
+        if (e.target === document.querySelector("undergraduate-card")) {
+          document.querySelector(".detailsButton").innerText = e.detail.value
+            ? 'Close Details'
+            : 'Open Details';
+        }
+      });
+    document.querySelector('.detailsButton').addEventListener('click', (e) =>{
+  //     const details = document.querySelector('undergraduate-card').shadowRoot.querySelector('details')
+  //  if (details.getAttribute('open')) {
+  //   details.removeAttribute('open');
+  // }
+  // else {
+  //   details.setAttribute('open','open');    
+  //}
+  const card = document.querySelector('undergraduate-card');
+  card.opened = !card.opened;
+});
+  document.querySelector('.copy').addEventListener('click', function(e) {
+  const itemToClone = document.querySelector('undergraduate-card').cloneNode();
+  document.querySelector('#app').appendChild(itemToClone);
+});
+document.querySelector('.changeTitle').addEventListener('click', function(e) {
+  let name = prompt("Name Bryce....");
+  if (name) {
+    document.querySelector('undergraduate-card').name = name;
+  }
+});
+document.querySelector('.deleteButton').addEventListener('click', function(e) {
+  // let wantsTo = confirm("Are you sure?");
+  // if (wantsTo) {
+  //   if (document.querySelector('#app :last-child') !== document.querySelector('undergraduate-card')) {
+  //     document.querySelector('#app :last-child').remove();      
+  //   }
+  //   else {
+  //     alert("YOU CAN NOT DELETE BRYCLE!!!!");
+  //   }
+  // }
+  const card = document.querySelectorAll("undergraduate-card");
+      if (card.length !== 1) { 
+        const lastCard = card[card.length - 1];
+        lastCard.remove();
+      }
+});
+function getRandomColor() {
+        var letters = "0123456789ABCDEF";
+        var color = "#";
+        for (var i = 0; i < 6; i++) {
+          color += letters[Math.floor(Math.random() * 16)];
+        }
+        return color;
+      }
+      const card = document.querySelector("undergraduate-card");
+      document.querySelector('.colorButton').addEventListener("click", function (e) {
+      card.shadowRoot.querySelector(".all").style.backgroundColor =
+        getRandomColor();
+      var color = getRandomColor();
+    });
+
+</script>
+</body>
+
+</html>
