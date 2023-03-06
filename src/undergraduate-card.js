@@ -11,6 +11,10 @@ export class UndergraduateCard extends LitElement {
         type: String,
         reflect: true
       },
+      subname: {
+        type: String,
+        reflect: true
+      },
       description: {
         type: String,
         reflect: true
