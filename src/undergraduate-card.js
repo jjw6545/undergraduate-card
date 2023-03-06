@@ -29,6 +29,10 @@ export class UndergraduateCard extends LitElement {
         attribute: "card-color" },
       imageLink: { 
         type: String },
+      topText: { 
+        type: String },
+      bottomText: { 
+        type: String },
     }
   }
   static get styles () {
